@@ -22,5 +22,33 @@ namespace PayRoll.Models
         [Display(Name = "Pay Week")]
         [DataType(DataType.Date)]
         public DateTime payWeek { get; set; }
+        
+        public static string GetPay(decimal hoursWorked, decimal rateOfPay)
+        {
+            decimal totalPay;
+            string pay;
+            if (hoursWorked > 40)
+            {
+                totalPay = (((hoursWorked - 40) + rateOfPay / 2) + hoursWorked * rateOfPay);
+            }
+            else
+            {
+                totalPay = (hoursWorked * rateOfPay);
+            }
+
+            pay = totalPay.ToString("C");
+
+            return pay;
+        }
+
+        public static string OverTime(decimal hoursWorked)
+        {
+
+            if (hoursWorked > 40)
+            {
+                return $"{hoursWorked - 40} hours.";
+            }
+            return null;
+        }
     }
 }
