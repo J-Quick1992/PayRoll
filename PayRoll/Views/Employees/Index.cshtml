@@ -9,11 +9,24 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Filter by Date: <input type="text" name="SearchString" value="@ViewData["currentFilter"]" />
+            @*<input type="submit" value="Search" class="btn btn-default" />*@
+            <input type="text" placeholder="" />
+            <button type="submit"><i class="fa fa-search">Search</i></button>
+            <a asp-action="Index">View Whole List</a>
+        </p>
+    </div>
+</form>
+
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.employeeName)
+            <th>   
+                <a style="color:black" asp-action="Index" asp-route-sortOrder="@ViewData["NameSorting"]">@Html.DisplayNameFor(model => model.employeeName)</a>
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.rateOfPay)
@@ -22,7 +35,7 @@
                 @Html.DisplayNameFor(model => model.hoursWorked)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.payWeek)
+                <a style="color:black" asp-action="Index" asp-route-sortOrder="@ViewData["DateSorting"]">@Html.DisplayNameFor(model => model.payWeek)</a>
             </th>
             <th></th>
         </tr>
@@ -43,10 +56,10 @@
                 @Html.DisplayFor(modelItem => item.payWeek)
             </td>
             <td>
-                @if (item.hoursWorked > 40)
-                {
-
-                }
+               @Employee.OverTime(item.hoursWorked)
+            </td>
+            <td>
+                @Employee.GetPay(item.hoursWorked, Convert.ToDecimal(item.rateOfPay))
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.employeeId">Edit</a> |
